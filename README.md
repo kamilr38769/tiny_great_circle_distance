@@ -46,3 +46,10 @@ Out-of-range coordinates are normalised rather than rejected: a latitude of
 100° is reflected to 80° (10° past the pole), and a longitude of 270° is
 wrapped to -90°. This is deliberate so that callers can pass un-normalised
 data without a crash, but it means a typo like `lat: 100` will not throw.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
